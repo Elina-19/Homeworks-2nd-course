@@ -7,7 +7,6 @@
     <groupId>ru.itis</groupId>
     <artifactId>web-framework</artifactId>
     <version>1.0</version>
-    <packaging>war</packaging>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

@@ -1,4 +1,4 @@
-package test.config;
+package ru.itis.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -7,10 +7,9 @@ import ru.itis.framework.modelAndView.ISimpleViewResolver;
 import ru.itis.framework.modelAndView.SimpleViewResolver;
 import ru.itis.framework.routing.ISimpleHandlerMapper;
 import ru.itis.framework.routing.SimpleHandlerMapper;
-import ru.itis.framework.routing.Test;
 
 @Configuration
-@ComponentScan("test.controllers")
+@ComponentScan("ru.itis.controllers")
 public class ApplicationConfig {
     @Bean
     public ISimpleViewResolver iSimpleViewResolver(){
@@ -20,15 +19,9 @@ public class ApplicationConfig {
 
     @Bean
     public ISimpleHandlerMapper iSimpleHandlerMapper(){
-        ISimpleHandlerMapper handlerMapper = new SimpleHandlerMapper("");
+        ISimpleHandlerMapper handlerMapper = new SimpleHandlerMapper("C:\\Users\\Репозитории\\Homeworks-2nd-course\\Web Framework Testing\\src\\main\\java\\ru\\itis\\controllers");
         return handlerMapper;
     }
-
-    @Bean
-    public Test test(){
-        return new Test();
-    }
-
 //    @Bean
 //    public ViewResolver viewResolver() {
 //        FreeMarkerViewResolver viewResolver = new FreeMarkerViewResolver();

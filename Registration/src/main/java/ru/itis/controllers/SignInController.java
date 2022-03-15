@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 import ru.itis.dto.SignInDto;
 import ru.itis.exceptions.InvalidEmailException;
 import ru.itis.exceptions.InvalidPasswordException;
@@ -33,6 +35,7 @@ public class SignInController {
         try{
             signInService.signIn(form, request, response);
             return "redirect:/profile";
+            //MvcUriComponentsBuilder.fromController(ProfileController.class).toUriString();
         }catch (NullPointerException | InvalidEmailException | InvalidPasswordException e){
             request.setAttribute("error", e.getMessage());
             request.setAttribute("form", form);

@@ -1,6 +1,8 @@
 package ru.itis.framework.entities;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 public class SimpleRequest {
     private HttpServletRequest servletRequest;
@@ -24,5 +26,18 @@ public class SimpleRequest {
 
     public String getMethod(){
         return servletRequest.getMethod();
+    }
+
+    public String getContextPath(){
+        return servletRequest.getContextPath();
+    }
+
+    public String getRequestPath(){
+        String requestUri = servletRequest.getRequestURI();
+        return requestUri.substring(servletRequest.getContextPath().length());
+    }
+
+    public void forward(SimpleResponse response, String path) throws ServletException, IOException {
+        servletRequest.getRequestDispatcher(path).forward(servletRequest, response.getServletResponse());
     }
 }

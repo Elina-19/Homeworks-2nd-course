@@ -9,8 +9,8 @@ import ru.itis.models.Account;
 import java.util.Optional;
 
 public interface AccountsRepository extends JpaRepository<Account, Long> {
-    Optional<Account> findByEmail(String email);
-    Optional<Account> findByUuid(String uuid);
+//    Optional<Account> findByEmail(String email);
+//    Optional<Account> findByUuid(String uuid);
 
     @Modifying
     @Transactional

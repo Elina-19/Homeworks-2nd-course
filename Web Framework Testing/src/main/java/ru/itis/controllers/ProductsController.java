@@ -16,7 +16,7 @@ public class ProductsController implements SimpleController {
         return "products";
     }
 
-    @Post
+    @Get
     public String doPost(ModelAndView view) {
         return null;
     }

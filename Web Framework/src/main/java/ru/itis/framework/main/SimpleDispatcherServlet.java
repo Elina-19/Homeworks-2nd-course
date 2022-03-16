@@ -13,6 +13,7 @@ import ru.itis.framework.modelAndView.ModelAndView;
 import ru.itis.framework.modelAndView.SimpleViewResolver;
 import ru.itis.framework.modelAndView.ISimpleViewResolver;
 import ru.itis.framework.routing.ISimpleHandlerMapper;
+import ru.itis.framework.util.HandlerControllerMethods;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -35,8 +36,7 @@ public class SimpleDispatcherServlet extends HttpServlet {
     private ISimpleHandlerMapper handlerMapper;
     private ApplicationContext context;
     private ISimpleViewResolver viewResolver;
-
-    private Map<String, Class> methodAnnotations;
+    private HandlerControllerMethods requestHandler;
 
     public SimpleDispatcherServlet(ApplicationContext context){
         this.context = context;
@@ -44,9 +44,8 @@ public class SimpleDispatcherServlet extends HttpServlet {
     }
 
     public void myInit() {
-        methodAnnotations = new HashMap<>();
-        methodAnnotations.put(HttpMethod.GET, Get.class);
-        methodAnnotations.put(HttpMethod.POST, Post.class);
+        requestHandler = new HandlerControllerMethods();
+        requestHandler.init();
 
         try {
             handlerMapper = context.getBean(ISimpleHandlerMapper.class);
@@ -73,35 +72,37 @@ public class SimpleDispatcherServlet extends HttpServlet {
         if (handlerMapper.hasRoute(requestPath)){
             SimpleController controller = handlerMapper.getHandler(requestPath);
             ModelAndView modelAndView = new ModelAndView();
-            String viewName;
+            //String viewName;
 
-            Class<Annotation> annotationName = methodAnnotations.get(request.getMethod());
-            Method[] methods = controller.getClass().getMethods();
+            requestHandler.handleRequest(controller, request, modelAndView);
 
-            try {
-                System.out.println(methods.length);
-                boolean flag = true;
-                for (Method m : methods) {
-                    Annotation[] annotations = m.getDeclaredAnnotations();
-                    //оздать карту с респонсом, реквестом, модель вью, у метода брать типы принимаемых аргументов,
-                    //если такой тип есть в этой карте, тон он, если нет, то энтитименеджер и бин из класса пользввателя
-                    System.out.println("annot: " + annotations.length);
-                    System.out.println(annotations[0].annotationType().getName());
-                    if (Arrays.asList(annotations).stream().map(e -> e.annotationType()).collect(Collectors.toList()).contains(annotationName)) {
-                        if (!flag){
-                            throw new IllegalArgumentException();
-                        }
-                        viewName = (String) m.invoke(controller, modelAndView);
-                        System.out.println(viewName);
-                        System.out.println(annotationName.getName());
-                        modelAndView.setName(viewName);
-                        flag = false;
-                    }
-                    System.out.println("here");
-                }
-            }catch (IllegalAccessException | InvocationTargetException e){
-                throw new IllegalArgumentException("Can't find method");
-            }
+//            Class<Annotation> annotationName = methodAnnotations.get(request.getMethod());
+//            Method[] methods = controller.getClass().getMethods();
+//
+//            try {
+//                System.out.println(methods.length);
+//                boolean flag = true;
+//                for (Method m : methods) {
+//                    Annotation[] annotations = m.getDeclaredAnnotations();
+//                    //оздать карту с респонсом, реквестом, модель вью, у метода брать типы принимаемых аргументов,
+//                    //если такой тип есть в этой карте, тон он, если нет, то энтитименеджер и бин из класса пользввателя
+//                    System.out.println("annot: " + annotations.length);
+//                    System.out.println(annotations[0].annotationType().getName());
+//                    if (Arrays.asList(annotations).stream().map(e -> e.annotationType()).collect(Collectors.toList()).contains(annotationName)) {
+//                        if (!flag){
+//                            throw new IllegalArgumentException();
+//                        }
+//                        viewName = (String) m.invoke(controller, modelAndView);
+//                        System.out.println(viewName);
+//                        System.out.println(annotationName.getName());
+//                        modelAndView.setName(viewName);
+//                        flag = false;
+//                    }
+//                    System.out.println("here");
+//                }
+//            }catch (IllegalAccessException | InvocationTargetException e){
+//                throw new IllegalArgumentException("Can't find method");
+//            }
 //            switch (request.getMethod()){
 //                case HttpMethod.GET:
 //

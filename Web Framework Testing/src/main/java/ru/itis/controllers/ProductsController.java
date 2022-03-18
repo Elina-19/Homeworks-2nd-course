@@ -5,6 +5,7 @@ import ru.itis.framework.annotations.methods.Get;
 import ru.itis.framework.annotations.methods.Post;
 import ru.itis.framework.entities.SimpleController;
 import ru.itis.framework.annotations.SimpleRequestMapping;
+import ru.itis.framework.entities.SimpleRequest;
 import ru.itis.framework.modelAndView.ModelAndView;
 
 @Controller
@@ -12,11 +13,11 @@ import ru.itis.framework.modelAndView.ModelAndView;
 public class ProductsController implements SimpleController {
 
     @Get
-    public String doGet(ModelAndView view) {
+    public String doGet(SimpleRequest request, ModelAndView view) {
         return "products";
     }
 
-    @Get
+    @Post
     public String doPost(ModelAndView view) {
         return null;
     }

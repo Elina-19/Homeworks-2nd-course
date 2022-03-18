@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Add product</h1>
-<form action="/addProduct" method="POST">
+<form method="POST">
     <div>
         <label for="name" class="form-label">Name</label>
         <input id="name" class="form-control" name="name" placeholder="Name">

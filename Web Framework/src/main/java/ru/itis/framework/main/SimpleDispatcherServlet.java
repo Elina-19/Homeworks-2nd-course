@@ -74,7 +74,7 @@ public class SimpleDispatcherServlet extends HttpServlet {
             ModelAndView modelAndView = new ModelAndView();
             //String viewName;
 
-            requestHandler.handleRequest(controller, request, modelAndView);
+            requestHandler.handleRequest(controller, request, response, modelAndView);
 
 //            Class<Annotation> annotationName = methodAnnotations.get(request.getMethod());
 //            Method[] methods = controller.getClass().getMethods();

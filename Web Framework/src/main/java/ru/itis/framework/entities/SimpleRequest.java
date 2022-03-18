@@ -3,6 +3,7 @@ package ru.itis.framework.entities;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Map;
 
 public class SimpleRequest {
     private HttpServletRequest servletRequest;

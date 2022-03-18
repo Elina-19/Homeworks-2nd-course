@@ -1,9 +1,10 @@
 package ru.itis.framework.entities;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Map;
 
 public class SimpleRequest {
     private HttpServletRequest servletRequest;
@@ -41,4 +42,13 @@ public class SimpleRequest {
     public void forward(SimpleResponse response, String path) throws ServletException, IOException {
         servletRequest.getRequestDispatcher(path).forward(servletRequest, response.getServletResponse());
     }
+
+    public HttpSession getSession() {
+        return servletRequest.getSession();
+    }
+
+    public Cookie[] getCookies(){
+        return servletRequest.getCookies();
+    }
 }
+

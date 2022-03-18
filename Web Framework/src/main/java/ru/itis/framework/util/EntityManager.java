@@ -2,6 +2,7 @@ package ru.itis.framework.util;
 
 import lombok.NoArgsConstructor;
 import ru.itis.framework.entities.SimpleRequest;
+import ru.itis.framework.exceptions.EntityIsUnavailable;
 
 import java.lang.reflect.Field;
 
@@ -14,6 +15,7 @@ public class EntityManager {
 
             for (Field field: fields){
                 field.setAccessible(true);
+
                 String fieldName = field.getName();
                 if (request.getParameter(fieldName) != null){
                     field.set(ob, request.getParameter(fieldName));
@@ -22,7 +24,8 @@ public class EntityManager {
 
             return ob;
         }catch (IllegalAccessException | InstantiationException e){
-            throw new IllegalArgumentException("");
+            throw new EntityIsUnavailable("The entity can not be created", e);
         }
     }
 }
+

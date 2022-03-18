@@ -1,9 +1,8 @@
 package ru.itis.framework.routing;
 
 import org.springframework.context.ApplicationContext;
-import ru.itis.framework.entities.SimpleController;
+import ru.itis.framework.main.SimpleController;
 import ru.itis.framework.annotations.SimpleRequestMapping;
-import ru.itis.framework.exceptions.IllegalPathToDirectory;
 
 import java.io.File;
 import java.util.Arrays;
@@ -12,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 public class SimpleHandlerMapper implements ISimpleHandlerMapper{
+    //.java
+    private static final int FILE_SUFFIX_LENGTH = 5;
 
     private ApplicationContext context;
 
@@ -31,10 +32,8 @@ public class SimpleHandlerMapper implements ISimpleHandlerMapper{
     public void init(ApplicationContext applicationContext){
         this.context = applicationContext;
         controllers = new HashMap<>();
-//        File controllersDirectory = new File(pathToControllers).getAbsoluteFile();
-//        System.out.println(controllersDirectory.getPath());
-        File controllersDirectory = new File (pathToControllers);
 
+        File controllersDirectory = new File (pathToControllers);
         if (controllersDirectory.exists()){
             List<File> controllerNames = Arrays.asList(controllersDirectory.listFiles());
 
@@ -49,7 +48,7 @@ public class SimpleHandlerMapper implements ISimpleHandlerMapper{
                 }
             }
         }else {
-            throw new IllegalPathToDirectory("Path to controller's directory is incorrect");
+            throw new IllegalArgumentException("Path to controller's directory is incorrect");
         }
     }
 
@@ -58,10 +57,13 @@ public class SimpleHandlerMapper implements ISimpleHandlerMapper{
         return controllers.containsKey(path);
     }
 
+    //Turns a filename into a bean name
+    //Example: SimpleController.java -> simpleController
     private String getBeanName(String file){
-        String beanName = file.substring(0, file.length() - 5);
+        String beanName = file.substring(0, file.length() - FILE_SUFFIX_LENGTH);
         beanName = beanName.substring(0, 1).toLowerCase() + beanName.substring(1);
 
         return beanName;
     }
 }
+

@@ -2,10 +2,12 @@ package ru.itis.framework.util;
 
 import ru.itis.framework.annotations.methods.Get;
 import ru.itis.framework.annotations.methods.Post;
-import ru.itis.framework.entities.SimpleController;
+import ru.itis.framework.main.SimpleController;
 import ru.itis.framework.entities.SimpleRequest;
 import ru.itis.framework.entities.SimpleResponse;
+import ru.itis.framework.exceptions.InaccessibleException;
 import ru.itis.framework.exceptions.MethodNotSupported;
+import ru.itis.framework.exceptions.RequestCouldNotBeProcessed;
 import ru.itis.framework.modelAndView.ModelAndView;
 
 import javax.ws.rs.HttpMethod;
@@ -27,66 +29,82 @@ public class HandlerControllerMethods {
         methodAnnotations.put(HttpMethod.POST, Post.class);
     }
 
-    //оздать карту с респонсом, реквестом, модель вью, у метода брать типы принимаемых аргументов,
-    //если такой тип есть в этой карте, тон он, если нет, то энтитименеджер и бин из класса пользввателя
-
-    public String handleRequest(SimpleController controller, SimpleRequest request, SimpleResponse response, ModelAndView modelAndView){
-        Class<Annotation> requestAnnotation = methodAnnotations.get(request.getMethod());
+    public void handleRequest(SimpleController controller, SimpleRequest request,
+                                SimpleResponse response, ModelAndView modelAndView){
+        Class<Annotation> requestMethodAnnotation = methodAnnotations.get(request.getMethod());
         Method[] methods = controller.getClass().getMethods();
 
-        String viewName = null;
+        String viewName;
         try {
+            //If a method with such an annotation has already been found,
+            //then the flag is false. 2 methods with the same request method annotation cannot be
             boolean flag = true;
+
             for (Method m : methods) {
-                Annotation[] annotations = m.getDeclaredAnnotations();
-                List<Class> annotationClasses = Arrays.asList(annotations).stream().
-                        map(e -> e.annotationType()).
-                        collect(Collectors.toList());
-
-                if (annotationClasses.contains(requestAnnotation)) {
+                if (containsRequestMethodAnnotation(m, requestMethodAnnotation)) {
                     if (!flag) {
-                        throw new IllegalArgumentException("Controller shouldn't have two same methods");
-                    }
-                    List<Class> parametersTypes = Arrays.asList(m.getParameterTypes());
-                    List<Object> params = new ArrayList<>();
-
-                    for (Class ob: parametersTypes) {
-                        boolean fl = true;
-
-                        if (fl && ob.equals(SimpleRequest.class)) {
-                            params.add(request);
-                            fl = false;
-                        }
-
-                        if (fl && ob.equals(SimpleResponse.class)) {
-                            params.add(response);
-                            fl = false;
-                        }
-
-                        if (fl && ob.equals(ModelAndView.class)) {
-                            params.add(modelAndView);
-                            fl = false;
-                        }
-
-                        if (fl){
-                            Object param = entityManager.getEntity(request, ob);
-                            params.add(param);
-                        }
+                        throw new RequestCouldNotBeProcessed("Controller has more than 1 method handling the same request");
                     }
 
-                    viewName = (String) m.invoke(controller, params.toArray());
+                    Object[] parameters = getParameters(Arrays.asList(m.getParameterTypes()),
+                            request, response, modelAndView);
+
+                    viewName = (String) m.invoke(controller, parameters);
                     modelAndView.setName(viewName);
+
                     flag = false;
                 }
             }
 
-            if (flag){
+            if (flag) {
                 throw new MethodNotSupported("That method is not supported with Controller");
             }
-
-            return viewName;
         }catch (IllegalAccessException | InvocationTargetException e){
-            throw new IllegalArgumentException("problems with reflection");
+            throw new InaccessibleException("Method in controller should be public", e);
         }
     }
+
+    private boolean containsRequestMethodAnnotation(Method m, Class<Annotation> requestMethodAnnotation){
+        Annotation[] annotations = m.getDeclaredAnnotations();
+        List<Class> annotationClasses = Arrays.asList(annotations).stream().
+                map(e -> e.annotationType()).
+                collect(Collectors.toList());
+
+        return annotationClasses.contains(requestMethodAnnotation);
+    }
+
+    private Object[] getParameters(List<Class> parametersTypes, SimpleRequest request,
+                                   SimpleResponse response, ModelAndView modelAndView){
+        List<Object> parameters = new ArrayList<>();
+
+        for (Class parameterType: parametersTypes) {
+            //The flag false indicates that a new entity needs to be created, bc
+            //it's not base parameter
+            boolean fl = true;
+
+            //TODO сделать карту параметров
+            if (parameterType.equals(SimpleRequest.class)) {
+                parameters.add(request);
+                fl = false;
+            }
+
+            if (fl && parameterType.equals(SimpleResponse.class)) {
+                parameters.add(response);
+                fl = false;
+            }
+
+            if (fl && parameterType.equals(ModelAndView.class)) {
+                parameters.add(modelAndView);
+                fl = false;
+            }
+
+            if (fl){
+                Object param = entityManager.getEntity(request, parameterType);
+                parameters.add(param);
+            }
+        }
+
+        return parameters.toArray();
+    }
 }
+

@@ -20,6 +20,6 @@ public class AddProductController implements SimpleController {
     @Post
     public String doPost(ModelAndView view, Product product) {
         System.out.println(product.getName());
-        return "products";
+        return "redirect:/products";
     }
 }

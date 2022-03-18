@@ -63,3 +63,4 @@ public class SimpleViewResolver implements ISimpleViewResolver {
         return viewName.substring(0, 9).equals(REDIRECT);
     }
 }
+

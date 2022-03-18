@@ -1,5 +1,6 @@
 package ru.itis.framework.entities;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -24,7 +25,12 @@ public class SimpleResponse {
         }
     }
 
+    public void addCookie(Cookie cookie){
+        servletResponse.addCookie(cookie);
+    }
+
     public HttpServletResponse getServletResponse() {
         return servletResponse;
     }
 }
+

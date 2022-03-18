@@ -9,3 +9,4 @@ import java.io.IOException;
 public interface ISimpleViewResolver {
     void resolveViewName(ModelAndView modelAndView, SimpleRequest request, SimpleResponse response) throws ServletException, IOException;
 }
+

@@ -3,7 +3,7 @@ package ru.itis.controllers;
 import org.springframework.stereotype.Controller;
 import ru.itis.framework.annotations.methods.Get;
 import ru.itis.framework.annotations.methods.Post;
-import ru.itis.framework.entities.SimpleController;
+import ru.itis.framework.main.SimpleController;
 import ru.itis.framework.annotations.SimpleRequestMapping;
 import ru.itis.framework.entities.SimpleRequest;
 import ru.itis.framework.modelAndView.ModelAndView;

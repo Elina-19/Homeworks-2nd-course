@@ -1,7 +1,6 @@
 package ru.itis.framework.util;
 
-import ru.itis.framework.annotations.methods.Get;
-import ru.itis.framework.annotations.methods.Post;
+import ru.itis.framework.annotations.methods.*;
 import ru.itis.framework.main.SimpleController;
 import ru.itis.framework.entities.SimpleRequest;
 import ru.itis.framework.entities.SimpleResponse;
@@ -27,12 +26,17 @@ public class HandlerControllerMethods {
         entityManager = new EntityManager();
         methodAnnotations.put(HttpMethod.GET, Get.class);
         methodAnnotations.put(HttpMethod.POST, Post.class);
+        methodAnnotations.put(HttpMethod.PUT, Put.class);
+        methodAnnotations.put(HttpMethod.DELETE, Delete.class);
+        methodAnnotations.put(HttpMethod.HEAD, Head.class);
+        methodAnnotations.put(HttpMethod.OPTIONS, Options.class);
+        methodAnnotations.put(HttpMethod.PATCH, Patch.class);
     }
 
     public void handleRequest(SimpleController controller, SimpleRequest request,
                                 SimpleResponse response, ModelAndView modelAndView){
         Class<Annotation> requestMethodAnnotation = methodAnnotations.get(request.getMethod());
-        Method[] methods = controller.getClass().getMethods();
+        Method[] methods = controller.getClass().getDeclaredMethods();
 
         String viewName;
         try {
@@ -82,7 +86,6 @@ public class HandlerControllerMethods {
             //it's not base parameter
             boolean fl = true;
 
-            //TODO сделать карту параметров
             if (parameterType.equals(SimpleRequest.class)) {
                 parameters.add(request);
                 fl = false;

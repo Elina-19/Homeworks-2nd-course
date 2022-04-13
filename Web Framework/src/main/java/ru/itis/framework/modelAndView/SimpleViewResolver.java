@@ -28,14 +28,6 @@ public class SimpleViewResolver implements ISimpleViewResolver {
         this.suffix = suffix;
     }
 
-//    @Override
-//    public String resolveViewName(String viewName) {
-//        if (viewName.startsWith(REDIRECT)){
-//            return viewName.substring(REDIRECT.length());
-//        }
-//        return prefix + viewName + suffix;
-//    }
-
     @Override
     public void resolveViewName(ModelAndView modelAndView, SimpleRequest request, SimpleResponse response) throws ServletException, IOException {
         String viewName = modelAndView.getName();

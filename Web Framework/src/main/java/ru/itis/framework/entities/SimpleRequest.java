@@ -5,6 +5,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Enumeration;
+import java.util.Map;
 
 public class SimpleRequest {
     private HttpServletRequest servletRequest;
@@ -24,6 +27,10 @@ public class SimpleRequest {
 
     public String getParameter(String name){
         return servletRequest.getParameter(name);
+    }
+
+    public Map<String, String[]> getParameterMap(){
+        return servletRequest.getParameterMap();
     }
 
     public String getMethod(){
@@ -49,6 +56,22 @@ public class SimpleRequest {
 
     public Cookie[] getCookies(){
         return servletRequest.getCookies();
+    }
+
+    public String getHeader(String var){
+        return servletRequest.getHeader(var);
+    }
+
+    public Enumeration<String> getHeaders(String var){
+        return servletRequest.getHeaders(var);
+    }
+
+    public Enumeration<String> getHeaderNames(){
+        return servletRequest.getHeaderNames();
+    }
+
+    public void setCharacterEncoding(String var) throws UnsupportedEncodingException {
+        servletRequest.setCharacterEncoding(var);
     }
 }
 

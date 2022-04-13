@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 public class SimpleHandlerMapper implements ISimpleHandlerMapper{
-    //.java
-    private static final int FILE_SUFFIX_LENGTH = 5;
 
     private ApplicationContext context;
 
@@ -60,7 +58,7 @@ public class SimpleHandlerMapper implements ISimpleHandlerMapper{
     //Turns a filename into a bean name
     //Example: SimpleController.java -> simpleController
     private String getBeanName(String file){
-        String beanName = file.substring(0, file.length() - FILE_SUFFIX_LENGTH);
+        String beanName = file.substring(0, file.lastIndexOf("."));
         beanName = beanName.substring(0, 1).toLowerCase() + beanName.substring(1);
 
         return beanName;

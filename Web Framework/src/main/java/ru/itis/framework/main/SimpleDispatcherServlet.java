@@ -66,7 +66,7 @@ public class SimpleDispatcherServlet extends HttpServlet {
             viewResolver.resolveViewName(modelAndView, request, response);
         }else {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            //httpResponse.getWriter().write("Page not found");
+            httpResponse.getWriter().write("Page not found");
         }
     }
 }

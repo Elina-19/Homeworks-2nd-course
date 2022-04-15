@@ -1,4 +1,5 @@
 <#import "/spring.ftl" as spring />
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"]/>
 
 <#macro header>
     <header>
@@ -10,20 +11,24 @@
                 </button>
                 <div class="actions collapse navbar-collapse" id="navbarSupportedContent">
                     <div class="d-flex">
-                        <button class="btn" type="button">
-                            <a href="<@spring.url relativeUrl="/signIn"/>" class="logout-button" id="signIn">Войти</a>
-                        </button>
-                        <button class="btn" type="button">
-                            <a href="<@spring.url relativeUrl="/signUp"/>" class="logout-button" id="signUp">Регистрация</a>
-                        </button>
-                        <a>
-                            <img class="userIcon" src="<@spring.url relativeUrl="/images/user.png"/>"/>
-                        </a>
+                        <@security.authorize access="!isAuthenticated()">
+                            <button class="btn" type="button">
+                                <a href="<@spring.url relativeUrl="/signIn"/>" class="logout-button" id="signIn">Войти</a>
+                            </button>
+                            <button class="btn" type="button">
+                                <a href="<@spring.url relativeUrl="/signUp"/>" class="logout-button" id="signUp">Регистрация</a>
+                            </button>
+                            <a>
+                                <img alt="user-image" class="userIcon" src="<@spring.url relativeUrl="/images/user.png"/>"/>
+                            </a>
+                        </@security.authorize>
                     </div>
                     <div>
-                        <button class="btn" type="button">
-                            <a href="<@spring.url relativeUrl="/profile"/>" class="logout-button">Профиль</a>
-                        </button>
+                        <@security.authorize access="isAuthenticated()">
+                            <button class="btn" type="button">
+                                <a href="<@spring.url relativeUrl="/profile"/>" class="logout-button">Профиль</a>
+                            </button>
+                        </@security.authorize>
                     </div>
                 </div>
             </div>

@@ -29,9 +29,9 @@ public class ArticlesServiceImpl implements ArticlesService {
     @Override
     public List<Article> getArticles(Account account) {
         switch (account.getRole()){
-            case ADMIN:
+            case ROLE_ADMIN:
                 return articlesRepository.findAll();
-            case USER:
+            case ROLE_USER:
                 return articlesRepository.findArticleByIsForAdmin(false);
             default:
                 return null;
@@ -52,12 +52,11 @@ public class ArticlesServiceImpl implements ArticlesService {
                                 .name(article.getName())
                                 .text(article.getText())
                                 .build();
-        System.out.println(article.getName().length() + " " + article.getText().length());
 
         newArticle = articlesRepository.save(newArticle);
 
         newArticle.setSlug(
-                new Slugify().slugify(newArticle.getName()) + newArticle.getId());
+                new Slugify().slugify(newArticle.getName()) + "-" + newArticle.getId());
 
         articlesRepository.save(newArticle);
     }
@@ -68,7 +67,7 @@ public class ArticlesServiceImpl implements ArticlesService {
                 .findById(id)
                 .orElseThrow(ArticleNotFoundException::new));
 
-        if (article.getIsForAdmin() && !account.getRole().equals(Account.Role.ADMIN)){
+        if (article.getIsForAdmin() && !account.getRole().equals(Account.Role.ROLE_ADMIN)){
             throw new CmsForbiddenException();
         }
 
@@ -86,7 +85,7 @@ public class ArticlesServiceImpl implements ArticlesService {
                 .findArticleBySlug(slug)
                 .orElseThrow(ArticleNotFoundException::new));
 
-        if (article.getIsForAdmin() && !account.getRole().equals(Account.Role.ADMIN)){
+        if (article.getIsForAdmin() && !account.getRole().equals(Account.Role.ROLE_ADMIN)){
             throw new CmsForbiddenException();
         }
 

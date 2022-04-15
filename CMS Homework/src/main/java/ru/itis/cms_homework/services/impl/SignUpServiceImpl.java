@@ -22,7 +22,7 @@ public class SignUpServiceImpl implements SignUpService {
                 .email(signUpForm.getEmail())
                 .password(passwordEncoder.encode(signUpForm.getPassword()))
                 .username(signUpForm.getUsername())
-                .role(Account.Role.USER)
+                .role(Account.Role.ROLE_USER)
                 .build();
 
         accountsRepository.save(account);

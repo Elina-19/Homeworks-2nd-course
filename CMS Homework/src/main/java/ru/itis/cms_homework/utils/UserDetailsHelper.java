@@ -9,7 +9,7 @@ public class UserDetailsHelper {
         if (userDetails == null){
 
             return Account.builder()
-                    .role(Account.Role.USER)
+                    .role(Account.Role.ROLE_USER)
                     .build();
         }else {
             return userDetails.getAccount();

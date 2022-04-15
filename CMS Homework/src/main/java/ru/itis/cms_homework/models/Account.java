@@ -16,7 +16,7 @@ import java.util.Set;
 public class Account {
 
     public enum Role{
-        ADMIN, USER
+        ROLE_ADMIN, ROLE_USER
     }
 
     @Id

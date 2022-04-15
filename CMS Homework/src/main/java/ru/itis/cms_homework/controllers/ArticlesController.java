@@ -1,7 +1,6 @@
 package ru.itis.cms_homework.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,9 +30,8 @@ public class ArticlesController {
         return "main";
     }
 
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/articles/newArticle")
-    public String getAddArticlePage(Model model){ ;
+    public String getAddArticlePage(Model model){
         model.addAttribute("addArticleForm", new AddArticleForm());
 
         return "addArticle";
@@ -43,6 +41,7 @@ public class ArticlesController {
     public String getArticleBySlug(@AuthenticationPrincipal AccountUserDetails account,
                              @PathVariable("article-slug") String slug, Model model){
 
+        System.out.println("here");
         ArticleDto article = articlesService
                 .getBySlug(slug, UserDetailsHelper.getAccount(account));
 

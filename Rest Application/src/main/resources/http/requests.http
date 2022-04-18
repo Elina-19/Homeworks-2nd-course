@@ -1,0 +1,23 @@
+### Добавление автора
+
+POST localhost:8080/authors
+Content-Type: application/json
+
+{
+  "firstName": "Name",
+  "lastName": "LastName"
+}
+
+### Получение 1-ой страницы с постами 1 автора
+
+GET localhost:8080/authors/1/posts?page=0
+
+### Обновление автора
+
+PUT localhost:8080/authors/1
+Content-Type: application/json
+
+{
+  "firstName": "Элина",
+  "lastName": "Загидуллина"
+}

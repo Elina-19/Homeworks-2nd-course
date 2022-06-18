@@ -1,9 +1,6 @@
 package ru.itis.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -14,6 +11,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = {"favourite"})
+@EqualsAndHashCode(exclude = {"favourite"})
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -67,6 +67,10 @@ public class SignInServiceImpl implements SignInService {
     public boolean authenticateByUUID(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
 
+        if (cookies == null){
+            return false;
+        }
+
         for (Cookie cookie: cookies){
             if (cookie.getName().equals(UUID_COOKIE)){
                 Optional<Account> optionalAccount = accountsRepository.findByUuid(cookie.getValue());

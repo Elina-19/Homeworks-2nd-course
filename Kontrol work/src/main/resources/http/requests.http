@@ -1,0 +1,7 @@
+### Запрос товара по id
+
+GET localhost/products/2
+
+### Запрос всех товаров
+
+GET localhost/products

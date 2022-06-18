@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.itis.aspects.annotations.LogMethod;
 import ru.itis.dto.SignUpDto;
 import ru.itis.exceptions.InvalidEmailException;
 import ru.itis.exceptions.NotAvailablePasswordException;
@@ -23,6 +24,7 @@ public class SignUpController {
         return "signUp";
     }
 
+    @LogMethod
     @PostMapping
     public String signUp(SignUpDto form, Model model){
         try{

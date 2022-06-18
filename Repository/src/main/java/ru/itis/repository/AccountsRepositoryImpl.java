@@ -42,9 +42,9 @@ public class AccountsRepositoryImpl implements AccountsRepository {
     @Override
     public List<Item> findAllFavourite(Integer accountId) {
         TypedQuery<Item> typedQuery = entityManager.createQuery(
-                 "select item from Item item " +
-                    "left join item.accounts acc " +
-                     "left join item.category where acc.id = :id", Item.class);
+                "select item from Item item " +
+                "left join item.accounts acc " +
+                "left join item.category where acc.id = :id", Item.class);
         typedQuery.setParameter("id", accountId);
 
         return typedQuery.getResultList();

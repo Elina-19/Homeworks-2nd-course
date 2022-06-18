@@ -3,7 +3,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import ru.itis.model.CollectionsFieldsTest;
-import ru.itis.model.Test2;
 import ru.itis.validator.CollectionFieldsValidator;
 import ru.itis.validator.CollectionFieldsValidatorImpl;
 
@@ -13,18 +12,12 @@ import java.util.*;
 public class TestCollectionsFieldsValidator {
 
     private CollectionFieldsValidatorImpl validator;
-    private CollectionFieldsValidatorImpl validator2;
 
     public TestCollectionsFieldsValidator(){
         validator = new CollectionFieldsValidatorImpl();
         CollectionFieldsValidator ann = CollectionsFieldsTest.class.
                 getAnnotation(CollectionFieldsValidator.class);
         validator.initialize(ann);
-
-        validator2 = new CollectionFieldsValidatorImpl();
-        CollectionFieldsValidator ann2 = Test2.class.
-                getAnnotation(CollectionFieldsValidator.class);
-        validator.initialize(ann2);
     }
 
     @Test
@@ -66,7 +59,4 @@ public class TestCollectionsFieldsValidator {
         Assert.assertTrue(validator.isValid(test, null));
     }
 
-//    @Test
-//    public void fieldNotExist(){
-//    }
 }
